@@ -14,6 +14,7 @@ import initFontAwesome from "./utils/initFontAwesome";
 import LoginPage from "./components/LoginPage";
 import { Container } from "@mui/material";
 import Dashboard from "./components/Dashboard";
+import DeliverableForm from "./components/Deliverables";
 initFontAwesome();
 
 const App = () => {
@@ -43,6 +44,7 @@ const App = () => {
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={LoginPage} />
           <Route path="/dashboard" exact component={Dashboard} />
+          <Route path="/deliverables" exact component={DeliverableForm} />
         </Switch>
       </Container>
     </Router>

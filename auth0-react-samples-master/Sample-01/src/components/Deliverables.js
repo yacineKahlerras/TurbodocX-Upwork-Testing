@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -12,8 +12,7 @@ import { Formik } from "formik";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-// Fix for worker error
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
 
 const validate = (values) => {
   const errors = {};
@@ -30,8 +29,6 @@ const validate = (values) => {
 };
 
 export default function DeliverableForm() {
-  const [pdfPage, setPdfPage] = useState(1);
-
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       {/* Top Header */}
@@ -180,13 +177,8 @@ export default function DeliverableForm() {
                 overflow: "auto",
               }}
             >
-              <Document
-                file="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
-                onLoadSuccess={({ numPages }) =>
-                  setPdfPage(Math.min(pdfPage, numPages))
-                }
-              >
-                <Page pageNumber={pdfPage} />
+              <Document file="/resume.pdf">
+                <Page pageNumber={1} />
               </Document>
             </Box>
           </Paper>

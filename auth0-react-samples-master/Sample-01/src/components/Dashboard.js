@@ -16,7 +16,6 @@ import {
   Stack,
 } from "@mui/material";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const files = [
   {
@@ -51,8 +50,8 @@ export default function Dashboard() {
           justifyContent: "space-between",
         }}
       >
-        <img src="/logo.svg" alt="Logo" />
         <Box>
+          <img src="/logo.svg" alt="Logo" />
           {/* Logo placeholder */}
           <Typography variant="h6" sx={{ mb: 4 }}>
             Templates

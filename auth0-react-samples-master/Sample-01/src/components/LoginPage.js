@@ -62,7 +62,10 @@ export default function LoginPage() {
 
         <Typography variant="body2" color="textSecondary">
           Don’t have an account?{" "}
-          <a href="#" style={{ color: "#2A5CAA", textDecoration: "underline" }}>
+          <a
+            href="/register"
+            style={{ color: "#2A5CAA", textDecoration: "underline" }}
+          >
             Sign up
           </a>
         </Typography>

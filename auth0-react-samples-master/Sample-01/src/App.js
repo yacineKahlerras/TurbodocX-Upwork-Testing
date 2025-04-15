@@ -17,7 +17,7 @@ import Dashboard from "./components/Dashboard";
 initFontAwesome();
 
 const App = () => {
-  const { isLoading, error, isAuthenticated } = useAuth0();
+  const { isLoading, error } = useAuth0();
 
   if (error) {
     return <div>Oops... {error.message}</div>;

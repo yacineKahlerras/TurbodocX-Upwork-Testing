@@ -12,7 +12,7 @@ import "./App.css";
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
 import LoginPage from "./components/LoginPage";
-import { Container } from "@mui/material";
+import { Container, CssBaseline, GlobalStyles } from "@mui/material";
 import Dashboard from "./components/Dashboard";
 import DeliverableForm from "./components/Deliverables";
 initFontAwesome();
@@ -40,6 +40,33 @@ const App = () => {
           p: 0,
         }}
       >
+        <CssBaseline />
+        <GlobalStyles
+          styles={{
+            html: {
+              boxSizing: "border-box",
+              fontFamily: "Inter, sans-serif",
+              backgroundColor: "#f9f9f9",
+            },
+            "*": {
+              boxSizing: "inherit",
+              margin: 0,
+              padding: 0,
+            },
+            body: {
+              lineHeight: 1.5,
+              color: "#333",
+            },
+            a: {
+              textDecoration: "none",
+              color: "inherit",
+            },
+            ".MuiButton-root": {
+              textTransform: "capitalize",
+              color: "black",
+            },
+          }}
+        />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/login" exact component={LoginPage} />

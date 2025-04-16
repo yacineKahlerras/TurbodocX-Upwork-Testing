@@ -30,26 +30,35 @@ const validate = (values) => {
 
 export default function DeliverableForm() {
   return (
-    <Container maxWidth="xl" sx={{ mt: 4 }}>
+    <Container sx={{ mt: 2 }}>
       {/* Top Header */}
       <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        mb={4}
+        sx={{
+          display: "flex",
+          justifyContent: "start",
+          alignItems: "center",
+          mb: 4,
+          gap: 5,
+        }}
       >
-        <Typography variant="h4" fontWeight="bold" color="primary">
-          μDocx
-        </Typography>
-        <Box display="flex" alignItems="center" gap={2}>
+        <img src="/logo.svg" alt="Logo" />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 2,
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
           <Button variant="text">Create Deliverable</Button>
           <Button variant="text">Need Help?</Button>
         </Box>
       </Box>
 
-      <Grid container spacing={4}>
+      <Grid sx={{ display: "flex", alignItems: "start", gap: 4 }}>
         {/* Left Form Side */}
-        <Grid item xs={12} md={6}>
+        <Grid sx={{ minWidth: "600px" }}>
           <Typography variant="h6" mb={1}>
             Fill in deliverable variables
           </Typography>
@@ -79,7 +88,11 @@ export default function DeliverableForm() {
               handleSubmit,
             }) => (
               <form onSubmit={handleSubmit}>
-                <Grid container spacing={2}>
+                <Grid
+                  container
+                  spacing={2}
+                  sx={{ display: "flex", flexDirection: "column" }}
+                >
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -146,18 +159,6 @@ export default function DeliverableForm() {
                       }
                     />
                   </Grid>
-
-                  <Grid
-                    item
-                    xs={12}
-                    display="flex"
-                    justifyContent="space-between"
-                  >
-                    <Button variant="outlined">Back</Button>
-                    <Button type="submit" variant="contained">
-                      Generate
-                    </Button>
-                  </Grid>
                 </Grid>
               </form>
             )}
@@ -165,8 +166,8 @@ export default function DeliverableForm() {
         </Grid>
 
         {/* Right Preview Side */}
-        <Grid item xs={12} md={6}>
-          <Paper elevation={2} sx={{ height: 600, p: 2 }}>
+        <Grid>
+          <Paper sx={{ p: 2 }}>
             <Typography variant="subtitle1" mb={2}>
               Preview
             </Typography>
@@ -183,6 +184,15 @@ export default function DeliverableForm() {
             </Box>
           </Paper>
         </Grid>
+      </Grid>
+
+      <Grid
+        sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}
+      >
+        <Button variant="outlined">Back</Button>
+        <Button type="submit" variant="contained">
+          Generate
+        </Button>
       </Grid>
     </Container>
   );

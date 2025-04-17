@@ -1,16 +1,9 @@
 import React from "react";
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  TextField,
-  Typography,
-  Paper,
-} from "@mui/material";
+import { Box, Button, Grid, TextField, Typography, Paper } from "@mui/material";
 import { Formik } from "formik";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+import "react-pdf/dist/esm/Page/TextLayer.css";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
 
@@ -28,17 +21,56 @@ const validate = (values) => {
   return errors;
 };
 
+const formFields = [
+  {
+    name: "deliverableName",
+    label: "Deliverable Name",
+    type: "text",
+    placeholder: "e.g. Monthly SEO Report",
+  },
+  {
+    name: "activitiesList",
+    label: "Activities List",
+    type: "text",
+    placeholder: "e.g. Keyword research, blog writing...",
+  },
+  {
+    name: "price",
+    label: "Price",
+    type: "number",
+    placeholder: "e.g. 25000",
+  },
+  {
+    name: "shortTermNextSteps",
+    label: "Short Term Next Steps",
+    type: "text",
+    placeholder: "e.g. Schedule kickoff call",
+  },
+];
+
 export default function DeliverableForm() {
   return (
-    <Container sx={{ mt: 2 }}>
+    <Grid
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 5,
+        width: "min(100%,1440px)",
+        mx: "auto",
+        px: "1.5rem",
+        pt: 2,
+        pb: 2.3,
+      }}
+    >
       {/* Top Header */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "start",
           alignItems: "center",
-          mb: 4,
           gap: 5,
+          pb: 3,
+          borderBottom: "1px solid #e0e0e0",
         }}
       >
         <img src="/logo.svg" alt="Logo" />
@@ -51,12 +83,30 @@ export default function DeliverableForm() {
             width: "100%",
           }}
         >
-          <Button variant="text">Create Deliverable</Button>
-          <Button variant="text">Need Help?</Button>
+          <Button
+            sx={{
+              color: "black",
+              textTransform: "none",
+              textDecoration: "none",
+            }}
+            variant="text"
+          >
+            Create Deliverable
+          </Button>
+          <Button
+            sx={{
+              color: "black",
+              textTransform: "none",
+              textDecoration: "none",
+            }}
+            variant="text"
+          >
+            Need Help?
+          </Button>
         </Box>
       </Box>
 
-      <Grid sx={{ display: "flex", alignItems: "start", gap: 4 }}>
+      <Grid sx={{ display: "flex", alignItems: "start", gap: 4, mx: "auto" }}>
         {/* Left Form Side */}
         <Grid sx={{ minWidth: "600px" }}>
           <Typography variant="h6" mb={1}>
@@ -93,72 +143,26 @@ export default function DeliverableForm() {
                   spacing={2}
                   sx={{ display: "flex", flexDirection: "column" }}
                 >
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      name="deliverableName"
-                      label="Deliverable Name"
-                      value={values.deliverableName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={
-                        touched.deliverableName &&
-                        Boolean(errors.deliverableName)
-                      }
-                      helperText={
-                        touched.deliverableName && errors.deliverableName
-                      }
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      name="activitiesList"
-                      label="Activities List"
-                      value={values.activitiesList}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={
-                        touched.activitiesList && Boolean(errors.activitiesList)
-                      }
-                      helperText={
-                        touched.activitiesList && errors.activitiesList
-                      }
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      name="price"
-                      label="Price"
-                      type="number"
-                      value={values.price}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={touched.price && Boolean(errors.price)}
-                      helperText={touched.price && errors.price}
-                    />
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      name="shortTermNextSteps"
-                      label="Short Term Next Steps"
-                      value={values.shortTermNextSteps}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      error={
-                        touched.shortTermNextSteps &&
-                        Boolean(errors.shortTermNextSteps)
-                      }
-                      helperText={
-                        touched.shortTermNextSteps && errors.shortTermNextSteps
-                      }
-                    />
-                  </Grid>
+                  {formFields.map(({ name, label, type, placeholder }) => (
+                    <Grid item xs={12} key={name}>
+                      <Typography variant="subtitle2" mb={0.5}>
+                        {label}
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        size="small"
+                        name={name}
+                        type={type}
+                        value={values[name]}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched[name] && Boolean(errors[name])}
+                        helperText={touched[name] && errors[name]}
+                        sx={{ py: 0.5 }}
+                        placeholder={placeholder}
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
               </form>
             )}
@@ -166,34 +170,61 @@ export default function DeliverableForm() {
         </Grid>
 
         {/* Right Preview Side */}
-        <Grid>
-          <Paper sx={{ p: 2 }}>
-            <Typography variant="subtitle1" mb={2}>
-              Preview
-            </Typography>
-            <Box
-              sx={{
-                border: "1px solid #ddd",
-                height: "100%",
-                overflow: "auto",
-              }}
-            >
-              <Document file="/resume.pdf">
-                <Page pageNumber={1} />
-              </Document>
-            </Box>
-          </Paper>
-        </Grid>
+        <Paper
+          sx={{
+            p: 2,
+            textAlign: "center",
+            background: "#f5f5f5",
+            borderRadius: "1rem",
+            boxShadow: "none",
+            px: 3,
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{ mb: 2, fontWeight: 500, color: "#bbbbbb" }}
+          >
+            Preview
+          </Typography>
+          <Box>
+            <Document file="/resume.pdf">
+              <Page
+                width={400}
+                pageNumber={1}
+                renderTextLayer={false}
+                renderAnnotationLayer={false}
+              />
+            </Document>
+          </Box>
+        </Paper>
       </Grid>
 
       <Grid
         sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}
       >
-        <Button variant="outlined">Back</Button>
-        <Button type="submit" variant="contained">
+        <Button
+          sx={{
+            color: "black",
+            textTransform: "none",
+            textDecoration: "none",
+          }}
+          variant="text"
+        >
+          Back
+        </Button>
+        <Button
+          sx={{
+            textTransform: "none",
+            textDecoration: "none",
+            backgroundColor: "#2B579A",
+            py: "0.5rem",
+            boxShadow: "none",
+          }}
+          variant="contained"
+        >
           Generate
         </Button>
       </Grid>
-    </Container>
+    </Grid>
   );
 }

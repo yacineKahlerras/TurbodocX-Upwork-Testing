@@ -12,7 +12,7 @@ import "./App.css";
 // fontawesome
 import initFontAwesome from "./utils/initFontAwesome";
 import LoginPage from "./components/LoginPage";
-import { Container, CssBaseline, GlobalStyles } from "@mui/material";
+import { CssBaseline, GlobalStyles, Grid } from "@mui/material";
 import Dashboard from "./components/Dashboard";
 import DeliverableForm from "./components/Deliverables";
 initFontAwesome();
@@ -30,9 +30,7 @@ const App = () => {
 
   return (
     <Router history={history}>
-      <Container
-        disableGutters
-        maxWidth={false}
+      <Grid
         sx={{
           width: "100%",
           minHeight: "100vh",
@@ -64,6 +62,7 @@ const App = () => {
             ".MuiButton-root": {
               textTransform: "capitalize",
               color: "black",
+              textDecoration: "none",
             },
           }}
         />
@@ -73,7 +72,7 @@ const App = () => {
           <Route path="/dashboard" exact component={Dashboard} />
           <Route path="/deliverables" exact component={DeliverableForm} />
         </Switch>
-      </Container>
+      </Grid>
     </Router>
   );
 };

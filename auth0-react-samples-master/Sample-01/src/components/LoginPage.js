@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, TextField, Typography, Box, Divider } from "@mui/material";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useQuery } from "@tanstack/react-query";
+import validateUser from "../utils/validateUser";
 
 export default function LoginPage() {
+  const { getAccessTokenSilently, isAuthenticated, loginWithRedirect } =
+    useAuth0();
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["validate-user"],
+    queryFn: () => validateUser(getAccessTokenSilently),
+    enabled: !!isAuthenticated,
+  });
+  const [email, setEmail] = useState("");
+
+  console.log(
+    isLoading ? "its loading..." : data,
+    "isAuthenticated : ",
+    isAuthenticated
+  );
+
   return (
     <Box
       sx={{
@@ -72,6 +90,7 @@ export default function LoginPage() {
             textTransform: "capitalize",
             textSize: "2.5rem",
           }}
+          onClick={() => loginWithRedirect({ login_hint: email })}
         >
           Continue
         </Button>
@@ -114,6 +133,7 @@ export default function LoginPage() {
             justifyContent: "start",
             textSize: "2rem",
           }}
+          onClick={() => loginWithRedirect({ connection: "google-oauth2" })}
         >
           <img
             src="/google.svg"

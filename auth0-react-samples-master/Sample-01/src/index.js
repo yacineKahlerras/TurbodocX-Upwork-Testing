@@ -6,6 +6,9 @@ import * as serviceWorker from "./serviceWorker";
 import { Auth0Provider } from "@auth0/auth0-react";
 import history from "./utils/history";
 import { getConfig } from "./config";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 const onRedirectCallback = (appState) => {
   history.push(
@@ -18,19 +21,20 @@ const onRedirectCallback = (appState) => {
 const config = getConfig();
 
 const providerConfig = {
-  domain: config.domain,
-  clientId: config.clientId,
-  onRedirectCallback,
+  domain: "dev-8depneh2aklwj7em.us.auth0.com",
+  clientId: "RASaGvjcigOUHMuNam9ODwr3sWgBA2tj",
   authorizationParams: {
     redirect_uri: window.location.origin,
-    // audience: config.audience,
+    audience: "http://localhost:3001/api",
   },
 };
 
 const root = createRoot(document.getElementById("root"));
 root.render(
   <Auth0Provider {...providerConfig}>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </Auth0Provider>
 );
 

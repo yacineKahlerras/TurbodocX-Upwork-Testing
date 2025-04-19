@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const { auth } = require("express-oauth2-jwt-bearer");
 const authConfig = require("./src/auth_config.json");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("./src/generated/prisma");
 
 const prisma = new PrismaClient();
 const app = express();
@@ -30,13 +30,13 @@ app.use(helmet());
 app.use(cors({ origin: appOrigin }));
 
 const checkJwt = auth({
-  audience: authConfig.audience,
-  issuerBaseURL: `https://${authConfig.domain}/`,
+  audience: process.env.AUTH0_API_IDENTIFIER,
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
   algorithms: ["RS256"],
 });
 
 app.get("/api/external", checkJwt, async (req, res) => {
-  const { sub, email, name } = req.auth;
+  const { sub, email, name } = req.auth.payload;
 
   console.log("req.auth : ", req.auth);
 

@@ -29,6 +29,7 @@
     "@mui/icons-material": "^7.0.2",
     "@mui/material": "^7.0.2",
     "@prisma/client": "^6.6.0",
+    "@tanstack/react-query": "^5.74.4",
     "autoprefixer": "^10.4",
     "cors": "^2.8",
     "express": "^4.18",

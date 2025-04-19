@@ -53,7 +53,7 @@ const App = () => {
           <Route path="/login" exact component={LoginPage} />
           <PrivateRoute path="/" exact component={Dashboard} />
           <PrivateRoute
-            path="/deliverables"
+            path="/deliverables/:id"
             exact
             component={DeliverableForm}
           />

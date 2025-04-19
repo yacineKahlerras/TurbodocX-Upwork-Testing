@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
+import { useParams } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
 
@@ -49,6 +50,10 @@ const formFields = [
 ];
 
 export default function DeliverableForm() {
+  const { id } = useParams();
+
+  return <div>User ID: {id}</div>;
+
   return (
     <Grid
       sx={{

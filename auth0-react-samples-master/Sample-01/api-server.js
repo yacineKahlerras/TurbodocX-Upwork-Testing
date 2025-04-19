@@ -38,8 +38,6 @@ const checkJwt = auth({
 app.get("/api/external", checkJwt, async (req, res) => {
   const { sub, email, name } = req.auth.payload;
 
-  console.log("req.auth : ", req.auth);
-
   try {
     let user = await prisma.user.findUnique({
       where: { auth0Id: sub },
@@ -55,9 +53,10 @@ app.get("/api/external", checkJwt, async (req, res) => {
       });
     }
 
-    res.send({
+    return res.send({
       msg: "User verified and synced with DB",
       user,
+      isValid: true,
     });
   } catch (err) {
     console.error("User sync failed:", err);

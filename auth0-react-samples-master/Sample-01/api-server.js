@@ -4,7 +4,9 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const { auth } = require("express-oauth2-jwt-bearer");
 const authConfig = require("./src/auth_config.json");
+const { PrismaClient } = require("@prisma/client");
 
+const prisma = new PrismaClient();
 const app = express();
 
 const port = process.env.API_PORT || 3001;
@@ -33,10 +35,34 @@ const checkJwt = auth({
   algorithms: ["RS256"],
 });
 
-app.get("/api/external", checkJwt, (req, res) => {
-  res.send({
-    msg: "Your access token was successfully validated!",
-  });
+app.get("/api/external", checkJwt, async (req, res) => {
+  const { sub, email, name } = req.auth;
+
+  console.log("req.auth : ", req.auth);
+
+  try {
+    let user = await prisma.user.findUnique({
+      where: { auth0Id: sub },
+    });
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          auth0Id: sub,
+          email: email || "unknown@email.com",
+          name: name || "Anonymous",
+        },
+      });
+    }
+
+    res.send({
+      msg: "User verified and synced with DB",
+      user,
+    });
+  } catch (err) {
+    console.error("User sync failed:", err);
+    res.status(500).send({ error: "Failed to sync user" });
+  }
 });
 
 app.listen(port, () => console.log(`API Server listening on port ${port}`));

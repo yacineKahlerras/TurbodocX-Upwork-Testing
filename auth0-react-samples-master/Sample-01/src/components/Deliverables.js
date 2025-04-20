@@ -5,6 +5,10 @@ import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import getDeliverable from "../utils/getDeliverable";
+import PageLoading from "./PageLoading";
+import { useAuth0 } from "@auth0/auth0-react";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `/pdf.worker.mjs`;
 
@@ -50,9 +54,20 @@ const formFields = [
 ];
 
 export default function DeliverableForm() {
+  const { getAccessTokenSilently } = useAuth0();
   const { id } = useParams();
+  const {
+    data: deliverableData,
+    isLoading: isLoadingDeliverable,
+    error: deliverableError,
+  } = useQuery({
+    queryKey: ["deliverables"],
+    queryFn: () => getDeliverable(id, getAccessTokenSilently),
+    enabled: !!id,
+  });
 
-  return <div>User ID: {id}</div>;
+  if (isLoadingDeliverable) return <PageLoading />;
+  if (deliverableError) return <h1>oops...error happened</h1>;
 
   return (
     <Grid

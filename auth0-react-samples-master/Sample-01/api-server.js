@@ -35,6 +35,19 @@ const checkJwt = auth({
   algorithms: ["RS256"],
 });
 
+app.get("/api/deliverable/:id", checkJwt, async (req, res) => {
+  const deliverableId = req.params.id;
+
+  const deliverable = await prisma.user.findUnique({
+    where: { id: parseInt(deliverableId) },
+  });
+
+  if (!deliverable)
+    return res.status(404).json({ error: "Deliverable not found" });
+
+  res.json(deliverable);
+});
+
 app.get("/api/external", checkJwt, async (req, res) => {
   const { sub, email, name } = req.auth.payload;
 
